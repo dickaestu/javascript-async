@@ -8,16 +8,25 @@
         return `https://www.blibli.com/backend/search/products?searchTerm=${keyword}`;
       }
 
-      function getProducts(keyword) {
+      function getProducts(keyword, callbackSuccess, callbackError) {
         // Code AJAX Here!
         const ajax = new XMLHttpRequest();
         ajax.onload = () => {
           if (ajax.status === 200) {
             const data = JSON.parse(ajax.responseText);
-            clearProducts();
-            displayProducts(data);
+
+            callbackSuccess(data);
+
+            // Display di list
+            // clearProducts();
+            // displayProducts(data);
+
+            // Display di table
+            // clearTableProducts();
+            // displayTableProducts(data);
           } else {
-            getProductsError();
+            callbackError;
+            // getProductsError();
           }
         };
 
@@ -72,7 +81,28 @@
       }
 
       function buttonClick() {
-        getProducts(document.getElementById("keyword").value);
+        getProducts(
+          document.getElementById("keyword").value,
+          (data) => {
+            console.log(data);
+            clearProducts();
+            displayProducts(data);
+          },
+          () => {
+            getProductsError();
+          }
+        );
+
+        getProducts(
+          document.getElementById("keyword").value,
+          (data) => {
+            clearTableProducts();
+            displayTableProducts(data);
+          },
+          () => {
+            getProductsError();
+          }
+        );
       }
     </script>
   </head>
