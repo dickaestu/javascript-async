@@ -47,15 +47,39 @@
       }
 
       function buttonClick() {
+        // const promise = getProducts(document.getElementById("keyword").value);
+        // promise
+        //   .then((value) => {
+        //     return value.data.products;
+        //   })
+        //   .then((products) => {
+        //     clearProducts();
+        //     products.forEach((product) => {
+        //       displayProduct(product);
+        //     });
+        //   })
+        //   .catch((error) => {
+        //     alert(error.message);
+        //   })
+        //   .finally(() => {
+        //     console.log("Selesai memproses promise");
+        //   });
+
+        // Promise All
         const promise = getProducts(document.getElementById("keyword").value);
-        promise
-          .then((value) => {
-            return value.data.products;
+        const promise2 = getProducts(document.getElementById("keyword2").value);
+        const promise3 = getProducts(document.getElementById("keyword3").value);
+
+        Promise.all([promise, promise2, promise3])
+          .then((values) => {
+            return values.map((value) => value.data.products);
           })
-          .then((products) => {
+          .then((values) => {
             clearProducts();
-            products.forEach((product) => {
-              displayProduct(product);
+            values.forEach((products) => {
+              products.forEach((product) => {
+                displayProduct(product);
+              });
             });
           })
           .catch((error) => {
@@ -69,6 +93,8 @@
   </head>
   <body>
     <input type="text" id="keyword" />
+    <input type="text" id="keyword2" />
+    <input type="text" id="keyword3" />
     <button onclick="buttonClick()">Search Products</button>
     <ul id="products"></ul>
   </body>
